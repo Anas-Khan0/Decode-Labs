@@ -51,4 +51,4 @@ npm run dev
 
 ---
 
-**Author:** Anas Khan
+**Author:** Muhammad Anas
