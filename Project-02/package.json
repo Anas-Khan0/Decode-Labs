@@ -1,0 +1,16 @@
+{
+  "name": "decodelabs-backend-api",
+  "version": "1.0.0",
+  "description": "Project 2 - Simple Backend API (Users) with GET/POST endpoints, input validation and proper HTTP status codes.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": ["api", "express", "rest", "backend", "decodelabs"],
+  "author": "Anas",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

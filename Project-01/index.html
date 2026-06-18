@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevHub — Curated Web Dev Resources</title>
+  <meta name="description" content="A responsive resource hub for front-end developers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+  <!-- Resource modal -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+      <span class="modal-tag" id="modalTag"></span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalBody"></p>
+      <div class="modal-footer">
+        <button class="btn-primary btn-sm" id="modalBookmark">Bookmark this guide</button>
+        <a href="#" class="card-link" id="modalLink">Read full guide →</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="logo">Dev<span>Hub</span></a>
+
+      <div class="header-actions">
+        <button class="bookmark-count-btn" id="bookmarkCountBtn" aria-label="View saved bookmarks" title="Your bookmarks">
+          <span class="bookmark-icon">♡</span>
+          <span class="bookmark-badge" id="bookmarkBadge" hidden>0</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="sr-only">Menu</span>
+        </button>
+      </div>
+
+      <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+        <a href="#hero">Home</a>
+        <a href="#resources">Resources</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <h1>Build the Future,<br>One Resource at a Time.</h1>
+      <p>A clean, curated library of HTML, CSS, JavaScript and tooling guides — picked for developers who just want to ship.</p>
+      <a href="#resources" class="btn-primary">Browse Resources</a>
+    </div>
+  </section>
+
+  <!-- Stats strip -->
+  <section class="stats-section" aria-label="Project statistics">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number" data-target="14">0</span>
+        <span class="stat-label">Guides</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="4">0</span>
+        <span class="stat-label">Categories</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="100">0</span>
+        <span class="stat-label">% Free</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">0</span>
+        <span class="stat-label">Frameworks</span>
+      </div>
+    </div>
+  </section>
+
+  <main id="main-content">
+    <section id="resources" class="content-layout" aria-label="Resource library">
+
+      <aside class="sidebar" aria-label="Filter resources by category">
+        <h2 class="sidebar-title">Categories</h2>
+        <div class="filter-group" id="filterGroup" role="group" aria-label="Resource categories">
+          <button class="filter-btn is-active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="html">HTML</button>
+          <button class="filter-btn" data-filter="css">CSS</button>
+          <button class="filter-btn" data-filter="js">JavaScript</button>
+          <button class="filter-btn" data-filter="tools">Tools</button>
+        </div>
+
+        <hr class="sidebar-divider">
+
+        <h2 class="sidebar-title">Sort By</h2>
+        <select class="sort-select" id="sortSelect" aria-label="Sort resources">
+          <option value="default">Default</option>
+          <option value="az">Title A → Z</option>
+          <option value="za">Title Z → A</option>
+          <option value="category">Category</option>
+        </select>
+
+        <hr class="sidebar-divider">
+
+        <h2 class="sidebar-title">Saved</h2>
+        <p class="bookmark-empty-msg" id="bookmarkEmptyMsg">No bookmarks yet.</p>
+        <ul class="bookmark-list" id="bookmarkList" aria-label="Bookmarked resources"></ul>
+      </aside>
+
+      <div class="content-main">
+
+        <!-- Search + count row -->
+        <div class="search-bar-wrap">
+          <div class="search-input-group">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search resources…"
+              aria-label="Search resources"
+              autocomplete="off"
+            >
+            <button class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
+          </div>
+          <p class="resource-count" id="resourceCount" aria-live="polite"></p>
+        </div>
+
+        <div class="content-grid" id="contentGrid">
+
+          <!-- Original 6 cards -->
+          <article class="card" data-category="html"
+            data-title="Semantic Landmarks 101"
+            data-desc="Why &lt;header&gt;, &lt;main&gt; and &lt;article&gt; matter more than divs — for screen readers, SEO and AI crawlers alike. Semantic HTML communicates structure to browsers, assistive technologies and search engines simultaneously, making it one of the highest-leverage writing habits a developer can build.">
+            <div class="card-header">
+              <span class="card-tag">HTML</span>
+              <button class="bookmark-btn" data-id="semantic-landmarks" aria-label="Bookmark Semantic Landmarks 101">♡</button>
+            </div>
+            <h3>Semantic Landmarks 101</h3>
+            <p>Why &lt;header&gt;, &lt;main&gt; and &lt;article&gt; matter more than divs — for screen readers, SEO and AI crawlers alike.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="css"
+            data-title="Grid vs Flexbox"
+            data-desc="Grid for the macro page floor-plan, Flexbox for the micro components inside it. Learn when to reach for which. The golden rule: if you're laying out a full-page or section skeleton, use Grid. If you're aligning items inside a component — a nav, a card footer, a form row — use Flexbox.">
+            <div class="card-header">
+              <span class="card-tag">CSS</span>
+              <button class="bookmark-btn" data-id="grid-vs-flexbox" aria-label="Bookmark Grid vs Flexbox">♡</button>
+            </div>
+            <h3>Grid vs Flexbox</h3>
+            <p>Grid for the macro page floor-plan, Flexbox for the micro components inside it. Learn when to reach for which.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="css"
+            data-title="Fluid Type with clamp()"
+            data-desc="Stop writing five media queries for font-size. One clamp() line scales your headings across every screen. The syntax is clamp(min, preferred, max) — the browser picks the preferred value but never goes below min or above max, giving you fluid scaling with hard guardrails.">
+            <div class="card-header">
+              <span class="card-tag">CSS</span>
+              <button class="bookmark-btn" data-id="fluid-type-clamp" aria-label="Bookmark Fluid Type with clamp()">♡</button>
+            </div>
+            <h3>Fluid Type with clamp()</h3>
+            <p>Stop writing five media queries for font-size. One clamp() line scales your headings across every screen.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="js"
+            data-title="Basic State Without a Framework"
+            data-desc="Toggle, filter and update the DOM using nothing but vanilla JS — the exact pattern used on this page. Maintain a single source-of-truth variable, write a render function that reads it, and trigger that function on every interaction. That's all state management ever is, with or without a framework.">
+            <div class="card-header">
+              <span class="card-tag">JavaScript</span>
+              <button class="bookmark-btn" data-id="basic-state" aria-label="Bookmark Basic State Without a Framework">♡</button>
+            </div>
+            <h3>Basic State Without a Framework</h3>
+            <p>Toggle, filter and update the DOM using nothing but vanilla JS — the exact pattern used on this page.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="tools"
+            data-title="Wireframing with Balsamiq"
+            data-desc="Low-fidelity, grayscale-first wireframing. If it doesn't work in grayscale, color won't fix it. Balsamiq's intentionally rough aesthetic discourages premature polish and keeps reviewers focused on structure and flow rather than font choices and hex codes.">
+            <div class="card-header">
+              <span class="card-tag">Tools</span>
+              <button class="bookmark-btn" data-id="wireframing-balsamiq" aria-label="Bookmark Wireframing with Balsamiq">♡</button>
+            </div>
+            <h3>Wireframing with Balsamiq</h3>
+            <p>Low-fidelity, grayscale-first wireframing. If it doesn't work in grayscale, color won't fix it.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="html"
+            data-title="Mobile-First Markup"
+            data-desc="Start with a single column, then expand outward with min-width media queries at 768px and 1024px. Mobile-first forces you to prioritise content over decoration — if it reads well on a 375px screen it'll read well everywhere. Desktop-first, by contrast, leads to ever-growing overrides.">
+            <div class="card-header">
+              <span class="card-tag">HTML</span>
+              <button class="bookmark-btn" data-id="mobile-first-markup" aria-label="Bookmark Mobile-First Markup">♡</button>
+            </div>
+            <h3>Mobile-First Markup</h3>
+            <p>Start with a single column, then expand outward with min-width media queries at 768px and 1024px.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <!-- 8 additional guides -->
+          <article class="card" data-category="css"
+            data-title="CSS Custom Properties Deep Dive"
+            data-desc="CSS variables aren't just for color tokens. Use them for spacing scales, component themes, and runtime state that changes with JavaScript — no preprocessor required. When you update a custom property on a parent element, every child that inherits it re-renders automatically, giving you a lightweight theming system with zero JavaScript overhead.">
+            <div class="card-header">
+              <span class="card-tag">CSS</span>
+              <button class="bookmark-btn" data-id="css-custom-props" aria-label="Bookmark CSS Custom Properties Deep Dive">♡</button>
+            </div>
+            <h3>CSS Custom Properties Deep Dive</h3>
+            <p>CSS variables aren't just for color tokens — use them for spacing scales, component themes, and runtime state with zero preprocessor overhead.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="js"
+            data-title="Async/Await Explained"
+            data-desc="Promises vs async/await — when to use which, how to handle errors properly with try/catch, and why Promise.all() beats sequential awaits for parallel work. Every await that isn't inside a Promise.all() is adding unnecessary latency when the tasks are independent of each other.">
+            <div class="card-header">
+              <span class="card-tag">JavaScript</span>
+              <button class="bookmark-btn" data-id="async-await" aria-label="Bookmark Async/Await Explained">♡</button>
+            </div>
+            <h3>Async/Await Explained</h3>
+            <p>Promises vs async/await, proper error handling with try/catch, and why Promise.all() beats sequential awaits for parallel work.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="html"
+            data-title="Web Accessibility Essentials"
+            data-desc="ARIA roles, focus management, colour contrast ratios, and keyboard navigation — the baseline checklist every project needs before shipping. ARIA should supplement semantics, never replace them. If you can use a native HTML element, use it. ARIA is the last resort, not the first tool.">
+            <div class="card-header">
+              <span class="card-tag">HTML</span>
+              <button class="bookmark-btn" data-id="accessibility-essentials" aria-label="Bookmark Web Accessibility Essentials">♡</button>
+            </div>
+            <h3>Web Accessibility Essentials</h3>
+            <p>ARIA roles, focus management, colour contrast, and keyboard navigation — the baseline every project needs before shipping.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="tools"
+            data-title="Git Workflow for Solo Devs"
+            data-desc="Branch naming conventions, atomic commits, useful .gitignore patterns, and why a consistent commit message format saves hours of debugging six months later. A commit should answer the question 'why was this change made?' — not just restate what files changed.">
+            <div class="card-header">
+              <span class="card-tag">Tools</span>
+              <button class="bookmark-btn" data-id="git-workflow" aria-label="Bookmark Git Workflow for Solo Devs">♡</button>
+            </div>
+            <h3>Git Workflow for Solo Devs</h3>
+            <p>Branch naming, atomic commits, handy .gitignore patterns, and why consistent commit messages save hours of debugging later.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="css"
+            data-title="CSS Animations &amp; Transitions"
+            data-desc="Keyframes, timing functions, and the key difference between transform and position changes for 60fps animations. Always animate transform and opacity — they trigger only the composite step in the browser's rendering pipeline, bypassing layout and paint entirely. Animating width, height, or top will cause jank at scale.">
+            <div class="card-header">
+              <span class="card-tag">CSS</span>
+              <button class="bookmark-btn" data-id="css-animations" aria-label="Bookmark CSS Animations & Transitions">♡</button>
+            </div>
+            <h3>CSS Animations &amp; Transitions</h3>
+            <p>Keyframes, timing functions, and why transform outperforms position changes. Build silky 60fps animations that respect prefers-reduced-motion.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="js"
+            data-title="LocalStorage &amp; SessionStorage"
+            data-desc="Client-side data persistence without a backend. Store user preferences, bookmarks, and form drafts — and know when to clear them. LocalStorage persists across tabs and browser restarts; SessionStorage is cleared when the tab closes. Both have a ~5MB cap and store only strings, so remember to JSON.stringify() your objects.">
+            <div class="card-header">
+              <span class="card-tag">JavaScript</span>
+              <button class="bookmark-btn" data-id="localstorage" aria-label="Bookmark LocalStorage & SessionStorage">♡</button>
+            </div>
+            <h3>LocalStorage &amp; SessionStorage</h3>
+            <p>Client-side persistence without a backend — store preferences, bookmarks, and form drafts, and know exactly when to clear them.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="tools"
+            data-title="Performance Budgets"
+            data-desc="Lighthouse scores, Core Web Vitals, lazy-loading images, and the 100kb JavaScript budget rule. Measure what matters before users bounce. LCP should be under 2.5s, CLS under 0.1, and INP under 200ms — those three numbers will tell you more about your real-user experience than any synthetic benchmark.">
+            <div class="card-header">
+              <span class="card-tag">Tools</span>
+              <button class="bookmark-btn" data-id="performance-budgets" aria-label="Bookmark Performance Budgets">♡</button>
+            </div>
+            <h3>Performance Budgets</h3>
+            <p>Lighthouse scores, Core Web Vitals, lazy-loading, and the 100kb JS budget rule. Measure what matters before users bounce.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+          <article class="card" data-category="html"
+            data-title="Form Accessibility"
+            data-desc="Labels, fieldsets, error messages tied to inputs via aria-describedby, and WCAG 2.1 success criteria for interactive form components. Every input needs a visible label — never rely on placeholder text alone. Error messages must be programmatically associated with the field that caused them, not just placed nearby.">
+            <div class="card-header">
+              <span class="card-tag">HTML</span>
+              <button class="bookmark-btn" data-id="form-accessibility" aria-label="Bookmark Form Accessibility">♡</button>
+            </div>
+            <h3>Form Accessibility</h3>
+            <p>Labels, fieldsets, aria-describedby error messages, and WCAG 2.1 criteria for interactive form components.</p>
+            <a href="#" class="card-link" data-modal>Read guide →</a>
+          </article>
+
+        </div>
+
+        <p class="empty-state" id="emptyState" hidden>No resources match your search — try different keywords or clear the filter.</p>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About this Project</h2>
+      <p>This page is the deliverable for Project 1: a responsive frontend interface built with pure HTML5, CSS3 and vanilla JavaScript — no frameworks — following a mobile-first, semantic, accessible approach.</p>
+    </section>
+  </main>
+
+  <!-- Contact form -->
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <h2>Get in Touch</h2>
+      <p>Have a resource suggestion or want to collaborate? Drop a message below.</p>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactName">Name</label>
+            <input type="text" id="contactName" name="name" placeholder="Your name" autocomplete="name" required>
+            <span class="field-error" id="nameError" aria-live="polite"></span>
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email</label>
+            <input type="email" id="contactEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <span class="field-error" id="emailError" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="5" placeholder="Tell us about a resource you'd like to see…" required></textarea>
+          <span class="field-error" id="messageError" aria-live="polite"></span>
+        </div>
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="newsletter-inner">
+      <h2>Stay in the Loop</h2>
+      <p>New guides drop every week. No spam — just quality resources, straight to your inbox.</p>
+      <form class="newsletter-form" id="newsletterForm" novalidate>
+        <div class="newsletter-input-group">
+          <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="your@email.com"
+            aria-label="Email address for newsletter"
+            required
+          >
+          <button type="submit" class="btn-primary">Subscribe</button>
+        </div>
+        <span class="field-error" id="newsletterError" aria-live="polite"></span>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 DevHub. Built for DecodeLabs Project 1.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
